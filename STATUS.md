@@ -1,148 +1,183 @@
-# Статус и спецификация темизации KDE Plasma 6.8 (kde-rounded-theme)
+# Статус миграции ROUNDED на KDE Plasma 6.8
 
-Дата ревизии: 2026-10-17
-Целевое окружение: Arch Linux, KDE Plasma 6.8.0 (Wayland), Qt 6.12, KF6 (`libplasma` 6.8.0, `ksvg` 6.8.0, `libklookandfeel` 6.8.0, `union` 6.8.0, `aurorae` 6.8.0, `plasma-login-manager` 6.8.0).
+Дата ревизии: 2026-10-17.
 
----
+Документ описывает текущее рабочее дерево после реализации миграции, а не
+только исходный коммит `157d821` (Plasma 5.25 / Qt 5).
+Полная визуальная совместимость ещё не подтверждена.
 
-## Часть 1. Архитектура стилизации KDE Plasma 6.8 (Полный справочник)
+## 1. Окружение и границы
 
-### 1.1. Глобальная тема (`Plasma/LookAndFeel` — `libklookandfeel`)
-Пути: `/usr/share/plasma/look-and-feel/`, `~/.local/share/plasma/look-and-feel/`
-Метаданные: `metadata.json` (`KPackageStructure: "Plasma/LookAndFeel"`).
+Проверенное локальное окружение: Arch Linux, Wayland.
 
-- **Флаги `AppearanceSettings` (`contents/defaults`):**
-  - `Colors`: `[kdeglobals][General] ColorScheme` (или вложенный файл `contents/colors`)
-  - `WidgetStyle`: `[kdeglobals][KDE] widgetStyle`
-  - `WindowDecoration`: `[kwinrc][org.kde.kdecoration2] library`, `theme`, `NoPlugin`
-  - `BorderSize`: `[kwinrc][org.kde.kdecoration2] BorderSize`, `BorderlessMaximizedWindows`
-  - `Icons`: `[kdeglobals][Icons] Theme`
-  - `PlasmaTheme`: `[plasmarc][Theme] name`
-  - `Cursors`: `[kcminputrc][Mouse] cursorTheme`
-  - `Fonts`: `[kdeglobals][General]` (`font`, `fixed`, `smallestReadableFont`, `toolBarFont`, `menuFont`) и `[kdeglobals][WM]` (`activeFont`)
-  - `WindowSwitcher`: `[kwinrc][TabBox] LayoutName`
-  - `DesktopSwitcher`: `[kwinrc][TabBox] DesktopLayout`
-  - `SplashScreen`: `[ksplashrc][KSplash] Theme`, `Engine`
-  - `Wallpaper`: `[Wallpaper] Image`
-- **Флаги `LayoutSettings`:**
-  - `DesktopLayout`: `contents/layouts/org.kde.plasma.desktop-layout.js`, `contents/layouts/defaults`, `contents/plasmoidsetupscripts/*.js`
-  - `TitlebarLayout`: `[kwinrc][org.kde.kdecoration2] ButtonsOnLeft`, `ButtonsOnRight`
-  - `WindowPlacement`: `[kwinrc][Windows] Placement`
-- **Встраиваемые QML/ресурсы (`contents/`):**
-  - `splash/Splash.qml`, `logout/Logout.qml`, `windowswitcher/WindowSwitcher.qml`
-  - `previews/` (`preview.png`, `fullscreenpreview.jpg`, `lockscreen.png`, `splash.png`, `windowswitcher.png`)
-  - *Изменения 6.8:* Удалены интеграции `ShellPackage`, `VirtualKeyboardLoader` и Latte Dock. Экран блокировки и OSD обслуживаются пакетом оболочки `/usr/share/plasma/shells/org.kde.plasma.desktop/contents/{lockscreen,osd,logout,applet,configuration,explorer,activitymanager}`.
+| Компонент | Проверенная версия |
+| --- | --- |
+| Plasma Workspace/Desktop, KWin, libplasma, Aurorae | 6.8.0 |
+| Qt Base | 6.12.0 |
+| KSvg | 6.31.0 |
 
-### 1.2. Оформление рабочего стола (`Plasma/Theme` — `libplasma` и `KSvg`)
-Пути: `/usr/share/plasma/desktoptheme/`, `~/.local/share/plasma/desktoptheme/`
-Метаданные и конфиг: `metadata.json` (`KPackageStructure: "Plasma/Theme"`), `plasmarc`, `colors` (опционально; без `colors` тема получает статус `FollowsColorTheme`).
+KSvg имеет версию 6.31.0, а не 6.8.0. Версии подтверждались локальными
+ресурсами/базой пакетов; `plasmashell --version` и `kwin_wayland --version`
+сообщают 6.8.0. Поддержка Plasma 5, прочих версий Plasma 6 и X11 не проверена.
 
-- **Конфигурация в `plasmarc`:**
-  - `[ContrastEffect]`: `enabled`, `contrast`, `intensity`, `saturation`
-  - `[BlurBehindEffect]`: `enabled`
-  - `[AdaptiveTransparency]`: `enabled`
-  - `[Wallpaper]`: `defaultWallpaperTheme`, `defaultFileSuffix`, `defaultWidth`, `defaultHeight`
-- **Селекторы рендеринга (подпапки):** корень (по умолчанию), `translucent/`, `opaque/`, `solid/`.
-- **Диалоги (`dialogs/`):** `background.svgz`, опционально `krunner.svgz`, `shutdowndialog.svgz`.
-- **Виджеты (`widgets/` — 43 стандартных SVG в `default`):**
-  `actionbutton`, `action-overlays`, `analog_meter`, `arrows`, `background`, `bar_meter_horizontal`, `bar_meter_vertical`, `branding`, `busywidget`, `button`, `calendar`, `checkmarks`, `clock`, `configuration-icons`, `containment-controls`, `dragger`, `frame`, `glowbar`, `line`, `lineedit`, `listitem`, `margins-highlight`, `media-delegate`, `menubaritem`, `monitor`, `notes`, `pager`, `panel-background` (префиксы `north/south/east/west`, `floating`, `mask`, `shadow`, `thick`, `hint-*-inset/margin`), `picker`, `plasmoidheading`, `plot-background`, `radiobutton`, `scrollbar`, `scrollwidget`, `slider`, `switch`, `tabbar`, `tasks`, `timer`, `toolbar`, `toolbox`, `tooltip`, `translucentbackground`, `viewitem`, плюс `extender-background` и `weather/wind-arrows`.
-- **Системные иконки трея (`icons/` — 58 стандартных SVG в `default`):**
-  `akonadi`, `akregator`, `amarok`, `applications`, `apport`, `audio`, `battery`, `bookmarks`, `cantata`, `computer`, `configure`, `device`, `disk`, `distribute`, `document`, `drive`, `edit`, `fcitx`, `go`, `ime`, `input`, `kalarm`, `kdeconnect`, `keyboard`, `kget`, `kgpg`, `kleopatra`, `klipper`, `kmail`, `konv_message`, `konversation`, `kopete`, `korgac`, `kpackagekit`, `kruler`, `kteatime`, `ktorrent`, `kup`, `list`, `mail`, `media`, `mobile`, `network`, `notification`, `osd`, `phone`, `plasmavault`, `plasmavault_error`, `preferences`, `printer`, `quassel`, `search`, `slc`, `software`, `start`, `system`, `touchpad`, `user`, `video`, `video-card`, `view`, `vlc`, `wallet`, `window`, `yakuake`, `zoom`.
-- **CSS-классы динамической окраски SVG (`KSvg::Svg::StyleSheetColor`):**
-  - Базовые: `ColorScheme-Text`, `Background`, `Highlight`, `HighlightedText`, `PositiveText`, `NeutralText`, `NegativeText`, `Frame`.
-  - Наборы (`Button*`, `View*`, `Tooltip*`, `Complementary*`, `Header*`): `*Text`, `*Background`, `*Hover`, `*Focus`, `*HighlightedText`, `*PositiveText`, `*NeutralText`, `*NegativeText`.
+Ссылка `/etc/systemd/system/display-manager.service` указывает на
+`plasmalogin.service`; это не является проверкой состояния процесса.
+Менеджер входа и его настройки в ходе миграции не изменялись.
 
-### 1.3. Цветовые схемы (`*.colors`)
-Пути: `/usr/share/color-schemes/`, `~/.local/share/color-schemes/`
-- **Наборы (`ColorSet`):** `[Colors:View]`, `[Colors:Window]`, `[Colors:Button]`, `[Colors:Selection]`, `[Colors:Tooltip]`, `[Colors:Complementary]`, `[Colors:Header]`, `[Colors:Header][Inactive]`.
-- **Роли в каждом наборе:** `BackgroundNormal`, `BackgroundAlternate`, `ForegroundNormal`, `ForegroundInactive`, `ForegroundActive`, `ForegroundLink`, `ForegroundVisited`, `ForegroundNegative`, `ForegroundNeutral`, `ForegroundPositive`, `DecorationFocus`, `DecorationHover`.
-- **Прочие секции:** `[WM]` (`activeBackground`, `activeForeground`, `activeBlend`, `inactiveBackground`, `inactiveForeground`, `inactiveBlend`), `[ColorEffects:Disabled]`, `[ColorEffects:Inactive]`, `[KDE]` (`contrast`, `frameContrast`), `[General]` (`ColorScheme`, `Name`, `AccentColor`, `TintFactor`, `TitlebarIsAccentColored` / `accentActiveTitlebar`, `shadeSortColumn`).
+По исходной инвентаризации пользовательская раскладка включает два монитора
+(2560x1440 и 1920x1080) и четыре панели. Тема к рабочей сессии не применялась,
+раскладка не менялась; её сохранение после ручного применения ещё не проверено.
 
-### 1.4. Стиль приложений (Application Style: KStyle, QQC2 и движок Union)
-- **Классический стек:** `QStyle` плагины (`/usr/lib/qt6/plugins/styles/`, `/usr/share/kstyle/themes/*.themerc`), `qqc2-desktop-style`, синхронизация GTK3/GTK4 через `kde-gtk-config`.
-- **Движок Union (новый в Plasma 6.8):** единый CSS-движок для QtWidgets (`UnionWidgetsStyle.so`), QtQuick Controls 2 (`/usr/lib/qt6/qml/org/kde/union/`, 50 контролов) и Kirigami (`org.kde.union`, 8 компонентов).
-  - Пути тем: `/usr/share/union/styles/<name>/contents/{css,images}/`.
-  - Файлы CSS: `variables.css`, `defaults.css`, `global.css`, `style.css`, `overrides.css`, `application.css`, `bars.css`, `button.css`, `calendar.css`, `check.css`, `delegate.css`, `kirigami.css`, `popup.css`, `tables.css`, `tabs.css`, `text.css`, `widgets.css`.
+## 2. Состав и идентификаторы
 
-### 1.5. KWin, Курсоры, Иконки, Звуки, Экран входа, Мониторинг, Обои
-- **Декорации окон (`KDecoration3` и `KWin/Aurorae`):**
-  - Пути Aurorae: `/usr/share/aurorae/themes/`, `~/.local/share/aurorae/themes/`.
-  - Элементы Aurorae: `decoration.svg`, кнопки (`close`, `minimize`, `maximize`, `restore`, `alldesktops`, `keepabove`, `keepbelow`, `shade`, `help`), конфиг `<theme>rc`, метаданные `metadata.json` (`KPackageStructure: "aurorae"`).
-- **Переключатели и эффекты KWin:** `KWin/WindowSwitcher` (`tabbox`), `KWin/Effect`, `KWin/Script`.
-- **Иконки и курсоры:** `/usr/share/icons/`, `~/.local/share/icons/` (включая `cursors_scalable/` для SVG-курсоров Wayland).
-- **Системные звуки:** `/usr/share/sounds/`, `~/.local/share/sounds/`.
-- **Экран входа:**
-  - `plasmalogin` (Plasma Login Manager 6.8) — активен в системе, использует Wayland/KWin и синхронизирует тему Plasma, цветовую схему, курсоры, шрифты и плагины обоев напрямую из системных настроек.
-  - `SDDM` (`/usr/share/sddm/themes/`) — устаревший альтернативный DM (в системе отключён).
-- **Системный монитор:** `KSysguard/SensorFace` (`/usr/share/ksysguard/sensorfaces/`).
-- **Обои:** `Wallpaper/Images` (с поддержкой `images/` и `images_dark/` для автопереключения день/ночь) и QML-плагины `Plasma/Wallpaper`.
+| Компонент | Светлый / динамический вариант | Фиксированный тёмный вариант |
+| --- | --- | --- |
+| Глобальная тема | `com.github.varlesh.rounded` | `com.github.varlesh.rounded-dark` |
+| Plasma Style | `ROUNDED-COLOR` | `ROUNDED-DARK` |
+| Цветовая схема | `ROUNDED` (`ROUNDED.colors`) | `ROUNDEDDARK` (`ROUNDEDDARK.colors`) |
+| Aurorae | `ROUNDED` | `ROUNDED-DARK` |
 
----
+Все исходные ID и имена файлов схем сохранены. COLOR следует системной
+палитре через классы `ColorScheme-*`. DARK сохраняет фиксированные SVG-цвета
+и собственный `plasma/desktoptheme/ROUNDED-DARK/colors`.
 
-## Часть 2. Состояние репозитория `kde-rounded-theme` и совместимость с Plasma 6.8
+Стиль приложений остаётся Breeze, иконки используют `breeze` / `breeze-dark`,
+курсоры обоих вариантов используют `breeze_cursors`.
 
-База репозитория: коммит `157d821` от 19.09.2022 (Plasma 5.25 / Qt 5).
+## 3. Выполненные изменения
 
-### 2.1. Сломанные и несовместимые компоненты
-1. **Глобальная тема (`plasma/look-and-feel/com.github.varlesh.rounded` и `rounded-dark`):**
-   - Использует удалённый в KF6 формат `metadata.desktop` (отсутствует `metadata.json`). `kpackagetool6 --type Plasma/LookAndFeel` и KCM «Оформление рабочей среды» пакет не видят.
-   - `contents/splash/Splash.qml` использует импорты Qt5 (`import QtQuick 2.5`, `import QtQuick.Window 2.2`).
-2. **Тема SDDM (`sddm/themes/ROUNDED-DARK`):**
-   - В системе вместо SDDM работает `plasmalogin.service` (Plasma Login Manager), который не использует темы SDDM.
-   - Код `Main.qml`, `RebootToolTip.qml`, `ShutdownToolTip.qml` импортирует удалённый в Qt6 модуль `QtGraphicalEffects 1.0` и `QtQuick.VirtualKeyboard 2.1` (не запустится в SDDM на Qt6 без портирования на `Qt5Compat.GraphicalEffects` / `MultiEffect`).
-3. **Макет Latte Dock (`ROUNDED.layout.latte`):**
-   - Полностью неактуален (Latte Dock не установлен и удалён из поддержки `libklookandfeel` в Plasma 6.8).
+### Метаданные и настройки
 
-### 2.2. Частично работающие компоненты (требуют доработки)
-1. **Plasma Style (`plasma/desktoptheme/ROUNDED-COLOR` и `ROUNDED-DARK`):**
-   - Загружается через легаси-фоллбэк `libPlasma`, но требует замены `metadata.desktop` на `metadata.json`.
-   - Секции `[ContrastEffect]` и `[AdaptiveTransparency]` записаны в `metadata.desktop` — в Plasma 6 они должны находиться в отдельном файле `plasmarc` (сейчас игнорируются).
-   - В `panel-background.svg` отсутствуют элементы плавающей панели Plasma 6 (`floating-*`, `hint-*-inset`).
-   - В `ROUNDED-COLOR` 131 SVG-файл размечен классами `ColorScheme-*` (поддерживает системную схему и акцентные цвета). В `ROUNDED-DARK` — 0 классов `ColorScheme-*`, цвета жёстко зашиты в SVG и файле `colors`.
-2. **Декорации Aurorae (`aurorae/themes/ROUNDED` и `ROUNDED-DARK`):**
-   - Загружаются плагином `org.kde.kwin.aurorae.so` через `metadata.desktop`, но для совместимости с `kpackagetool6` нужен `metadata.json`.
-3. **Цветовые схемы (`color-schemes/ROUNDED.colors`, `ROUNDEDDARK.colors`):**
-   - Работают, но не содержат секций `[Colors:Header]` и `[Colors:Header][Inactive]` для единых шапок окон KDE.
-4. **Терминалы (`yakuake/skins/ROUNDED*`, `konsole/ROUNDED.colorscheme`):**
-   - Полностью совместимы с текущими Yakuake 26.08.2 и Konsole 26.08.2.
+- В обоих глобальных пакетах `metadata.desktop` заменён на `metadata.json` с `KPackageStructure: Plasma/LookAndFeel`, авторством, лицензией и прежним ID.
+- В обоих desktop-пакетах добавлен `metadata.json` с `KPackageStructure: Plasma/Theme`; заменённые `metadata.desktop` удалены.
+- Явный `Plasma/Theme` оказался необходим установленному KPackage для обнаружения тем в списке: без него разбор по пути проходил, но список был пуст.
+- `X-Plasma-API` desktop-тем оставлен `5.0` по установленному эталону. Версия Plasma сама по себе не требует API `6.0`.
+- ContrastEffect и AdaptiveTransparency вынесены в `plasmarc` с исходными значениями: `enabled=false`, `contrast=0.2`, `intensity=0.4`, `saturation=1.7` для контраста; `enabled=true` для адаптивной прозрачности.
+- Удалены устаревшие сетевые KNewStuff-зависимости; включённые ресурсы поставляются установщиком локально. Fallback глобальных тем Breeze/Breeze Dark сохранён.
+- В defaults Volantes заменены на `breeze_cursors`; добавлен `[ksplashrc][KSplash] Theme` соответствующего пакета без назначения неподтверждённого Engine.
+- Секция декораций остаётся `[kwinrc][org.kde.kdecoration2]`; ABI KDecoration не является основанием переименовывать группу настройки.
 
----
+### Splash, панели, Aurorae и цвета
 
-## Часть 3. Покрытие компонентов текущей пользовательской системы
+- В обоих splash используется `import QtQuick` без версии; неиспользуемый QtQuick.Window удалён. Логотип, палитра, анимация и свойство `stage` сохранены.
+- В шести panel SVG (COLOR/DARK, корень/opaque/solid) исправлено имя `thick-right-margin` на `thick-hint-right-margin`. Геометрия и цвета не менялись.
+- Геометрия соответствующих COLOR/DARK панелей совпадает по проверяемым SVG-атрибутам и ID частей.
+- Отдельный `translucent/` не добавлялся: установленный Panel.qml использует корневой `widgets/panel-background` для прозрачных и `solid/widgets/panel-background` для непрозрачных панелей.
+- Floating-префикс допускает fallback на обычную рамку. Уже существующие `shadow-hint-*-inset` не подменяют обычные inset-hints; отсутствие отдельного floating-набора не объявляется само по себе дефектом.
+- В обе Aurorae добавлен различимый `restore.svg` с состояниями active, inactive, hover, pressed и deactivated. Ранее загрузчик мог использовать maximize при отсутствии restore; кнопка восстановления не была из-за этого неработоспособной.
+- Рабочие Aurorae `metadata.desktop` сохранены. Доступный тип пакетов называется `KWin/Aurorae`, а не `aurorae`; разбор KPackage не используется как гарантия работы SVG-декорации в KWin.
+- В обе схемы и встроенную палитру DARK добавлены полные `[Colors:Header]` и `[Colors:Header][Inactive]`. Поля `[General] ColorScheme` исправлены на собственные имена схем.
+- `help.svg` и `shade.svg` не добавлялись без подтверждённого требования к доступным действиям текущего Wayland/KWin.
 
-Сверка с активной конфигурацией рабочего стола (`~/.config/plasma-org.kde.plasma.desktop-appletsrc` и установленными пакетами):
-- Экраны: 2 монитора (2560x1440 и 1920x1080), контейнер `org.kde.plasma.folder`.
-- Панели: 4 панели `org.kde.panel` (2 верхние с треем, часами, погодой, разделителями; 2 нижние с `kickoff` и `icontasks`).
+## 4. Ресурсы и сознательные fallback
 
-### 3.1. Что стилизовано в теме (в наличии)
-- **Фоны (`dialogs/`, `widgets/`, `opaque/`, `solid/`):** `dialogs/background`, `widgets/panel-background`, `widgets/background`, `widgets/tooltip`.
-- **Базовые виджеты Plasma (`widgets/` — 24 файла):** `arrows`, `background`, `bar_meter_horizontal`, `bar_meter_vertical`, `busywidget`, `button`, `checkmarks`, `clock`, `configuration-icons`, `containment-controls`, `glowbar`, `line`, `lineedit`, `listitem`, `menubaritem`, `notes`, `pager`, `panel-background`, `scrollbar`, `scrollwidget`, `slider`, `switch`, `tabbar`, `tasks`, `tooltip`, `viewitem`.
-- **Иконки трея (`icons/` — 96 файлов), совпадающие с активными апплетами системы:**
-  `start` (Kickoff), `audio` (volume), `network` (networkmanagement), `battery`, `klipper` (clipboard), `kdeconnect`, `plasmavault` / `plasmavault_error` (vault), `printer` (printmanager), `keyboard` и `input` (keyboardlayout / keyboardindicator), `device` и `disk` (devicenotifier), `media` (mediacontroller), `notification` и `osd`, `preferences`, `system`, `configure`, `kup` (kupapplet), `yakuake`.
-  *(Также в теме есть 43 иконки сторонних/старых приложений, не используемых в трее: `antimicro`, `audacious`, `cadence`, `choqok`, `corectrl`, `elisa`, `jami`, `juk`, `kaffeine`, `krfb`, `krusader_*`, `lutris`, `manjaro`, `mellowplayer`, `nepomuk`, `nulloy`, `onboard`, `qbittorrent`, `sirikali`, `strawberry`, `TeamViewer`, `thunderbird`, `veracrypt` и др.)*
-- **Оконные декорации Aurorae:** `decoration.svg`, `close.svg`, `maximize.svg`, `minimize.svg`, `alldesktops.svg`, `keepabove.svg`, `keepbelow.svg`.
-- **Прочее:** цветовые схемы (`ROUNDED.colors`, `ROUNDEDDARK.colors`), скины Yakuake, палитра Konsole.
+В каждом корневом `widgets/` находится 26 SVG, а не 24. Всего автоматическая
+проверка охватывает 288 SVG Plasma/Aurorae. Наличие любого ресурса Breeze не
+означает, что ROUNDED обязан иметь собственную копию.
 
-### 3.2. Чего не хватает в теме (берётся из дефолтного Breeze или отсутствует)
-1. **Недостающие виджеты `desktoptheme/widgets/` (19 стандартных компонентов):**
-   - Высокий приоритет (активно задействованы на рабочем столе):
-     - `plasmoidheading.svg` — шапки и подвалы всех всплывающих окон (Kickoff, трей, часы, звук, сеть, уведомления).
-     - `calendar.svg` — сетка календаря (используется в `digitalclock` на обоих мониторах).
-     - `margins-highlight.svg` — индикация для используемых на верхних панелях `org.kde.plasma.marginsseparator`.
-     - `action-overlays.svg` — оверлеи выделения/открытия значков на рабочем столе (`org.kde.plasma.folder`).
-     - `actionbutton.svg` и `media-delegate.svg` — кнопки и обложки в `org.kde.plasma.mediacontroller` и на экране блокировки.
-     - `radiobutton.svg`, `frame.svg`, `toolbar.svg`, `toolbox.svg`, `translucentbackground.svg`, `dragger.svg`.
-     - `monitor.svg` — используется апплетом `org.kde.kscreen` в трее.
-   - Низкий приоритет (вспомогательные): `analog_meter.svg`, `branding.svg`, `picker.svg`, `plot-background.svg`, `timer.svg`, `weather/wind-arrows.svg`.
-   - Подкаталог `translucent/` (для KWin Blur).
-2. **Недостающие иконки трея `desktoptheme/icons/`:**
-   - Из стандартного набора Plasma 6.8 (6 шт.): `ime` (активен апплет `org.kde.plasma.manage-inputmethod`), `mobile`, `search`, `software`, `video-card`, `kpackagekit`.
-   - Под активные апплеты в трее пользователя: `org.kde.plasma.brightness` (яркость), `org.kde.plasma.cameraindicator` (индикатор камеры), `org.kde.plasma.dwellclicker`, `org.kde.plasma.kclock_1x2`, `org.kde.plasma.advanced-weather-widget`.
-3. **Недостающие кнопки декораций окон `aurorae/themes/ROUNDED*`:**
-   - `restore.svg` (кнопка восстановления распахнутого окна — критично при максимизации), `shade.svg`, `help.svg`.
-4. **Недостающие внешние компоненты и зависимости:**
-   - **Курсоры:** `contents/defaults` ссылается на `volantes_cursors` / `volantes_light_cursors`, которые отсутствуют и в репозитории, и в системе (в системе установлены `breeze_cursors`, `Eden`, `Tela`, `Adwaita`, `Oxygen`).
-   - **Стиль приложений:** нет темы для нового движка `Union` (`/usr/share/union/styles/`) или `KStyle`/Kvantum; используется дефолтный `Breeze`.
-   - **Терминал Kitty:** основной терминал пользователя (`kitty.desktop` на панели `icontasks`) не имеет цветовой схемы в репозитории.
-   - **Обои и иконки:** нет каталога `wallpapers/` и собственной темы иконок.
-   - **Экран входа:** нет конфигурации/обоев для активного `plasmalogin`.
+| Потребитель | Подтверждённый контракт | Решение |
+| --- | --- | --- |
+| Панели Plasma | `widgets/panel-background`, `solid/widgets/panel-background`, рамки/маски, `thick-hint-*` | Исправлено имя правого hint, остальной дизайн сохранён |
+| Folder containment | `widgets/action-overlays`, add/remove/open, normal/hover/pressed | Оставлен установленный default fallback |
+| Aurorae maximize button | `restoreButtonPath`, fallback на maximize | Добавлен отдельный restore |
+| KSplash | `contents/splash/Splash.qml`, свойство `stage` | Контракт сохранён, offscreen smoke-test пройден |
+
+Установленная default-тема предоставляет отсутствующие собственные ресурсы:
+`plasmoidheading`, `calendar`, `margins-highlight`, `action-overlays`,
+`actionbutton`, `media-delegate`, `radiobutton`, `frame`, `toolbar`,
+`translucentbackground`, `dragger`, `monitor`. Их визуальное согласование с
+ROUNDED ещё не проверено; массового копирования Breeze не выполнялось.
+
+Вспомогательные `analog_meter`, `branding`, `picker`, `plot-background`, `timer`,
+`weather/wind-arrows` оставлены на штатном fallback-пути без индивидуальной
+визуальной приёмки. Folder containment запрашивает `widgets/toolbox`, но в
+проверенных установленных desktop-темах подходящий SVG не найден; новый
+ресурс без подтверждённого контракта не создавался.
+
+ID апплета не равен имени desktoptheme SVG. Для IME, яркости, камеры,
+dwellclicker, kclock и сторонней погоды не добавлялись предположительные SVG.
+Потребитель может использовать Breeze icons, QtQuick Controls или Kirigami.
+Отсутствие `mobile`, `search`, `software`, `video-card`, `kpackagekit` само по
+себе не является блокером миграции.
+
+## 5. Установка и восстановление
+
+Добавлен `scripts/install.sh` (POSIX shell entry point, Python 3 stdlib).
+
+```sh
+sh scripts/install.sh install --dry-run
+sh scripts/install.sh install
+sh scripts/install.sh install --update --with-konsole --with-yakuake
+sh scripts/install.sh uninstall --dry-run
+sh scripts/install.sh uninstall
+sh scripts/install.sh restore --dry-run
+sh scripts/install.sh restore
+```
+
+- Устанавливается явный manifest в `${XDG_DATA_HOME:-$HOME/.local/share}`: глобальные/desktop-темы, Aurorae и цветовые схемы. Konsole/Yakuake включаются только опциями, их настройки не выбираются автоматически.
+- Обновление базовой темы без опциональных флагов сохраняет ранее установленные Konsole/Yakuake; для их обновления нужны соответствующие флаги.
+- Коллизии требуют `--update`; предсуществующие идентичные файлы не присваиваются установке. Устаревшие Plasma `metadata.desktop` удаляются с backup только по известным путям и при точном совпадении ID пакета.
+- Используются staging, контрольные суммы, транзакционные backups и откат замен при обычной ошибке. Межкаталожная установка не является одной атомарной транзакцией; принудительное завершение и потеря питания требуют отдельного восстановления.
+- Uninstall удаляет только неизменённые принадлежащие установке файлы, сохраняя пользовательские изменения и посторонние файлы. Пустые каталоги могут остаться.
+- Restore отменяет последнюю сохранённую операцию. После uninstall для возврата к состоянию до обновления сначала восстанавливается удаление, затем обновление.
+- При изменённых целях restore отказывается от всей операции и сохраняет backups. Проверяются ID транзакции, пути, ownership, хеши, режимы доступа и содержимое backup.
+- Мутирующие команды сериализуются через `flock`. Dry-run не создаёт файлов. Относительный XDG_DATA_HOME и символьные ссылки отклоняются; пустая переменная использует стандартный путь.
+- Состояние хранится в `.rounded-theme-installer` внутри каталога данных. Запись в `~/.config`, применение темы, перезапуск процессов и очистка кешей не выполняются.
+
+## 6. Выполненные проверки
+
+```sh
+sh scripts/check-theme.sh
+sh scripts/check-theme.sh --runtime
+python3 scripts/test-install.py
+sh -n scripts/install.sh scripts/check-theme.sh
+git diff --check
+```
+
+| Проверка | Результат |
+| --- | --- |
+| JSON, XML/SVG, уникальность ID, href-ссылки | Пройдено для проверяемых ресурсов, 288 SVG |
+| FrameSvg рамки/маски панелей и thick-margin hints | Пройдено |
+| Геометрия COLOR/DARK панелей, используемые COLOR CSS-классы | Пройдено |
+| Defaults, собственные ID, Header-роли и соответствие встроенного DARK | Пройдено |
+| qmllint обоих Splash.qml | Пройдено |
+| Разбор четырёх пакетов установленным kpackagetool6 по пути | Пройдено |
+| Оба splash в ksplashqml --test --window --nofork с QT_QPA_PLATFORM=offscreen | Пройдено, без вывода ошибок |
+| Установка в изолированные временные XDG-каталоги | Пройдено, применён 321 файл базового набора |
+| Plasma/LookAndFeel --list и Plasma/Theme --list после изолированной установки | Обнаружены все четыре ID |
+| 18 тестов установщика | Пройдено |
+| Shell-синтаксис и git diff --check | Пройдено |
+
+Тесты установщика включают пути с пробелами, повторную установку, коллизии,
+обновление legacy-метаданных, сохранение ownership и опциональных компонентов,
+rollback, проверку restore и backup, блокировку параллельных запусков,
+dry-run, отклонение symlink и некорректного XDG-пути.
+
+Временные каталоги удалены после тестирования. Проверки не применяли тему к
+основной сессии. Offscreen-запуск не заменяет визуальную приёмку.
+
+## 7. Непроверенные сценарии и исключения
+
+- KCM: карточки обеих глобальных/desktop-тем и Aurorae без дубликатов, корректное ручное применение компонентов.
+- Живой рендеринг Aurorae: все состояния кнопок, максимизация/восстановление, hit areas, размеры и читаемость заголовка.
+- Floating/non-floating панели: четыре края, разные высоты, переходы при максимизации, маски, тени, blur и adaptive transparency.
+- Kickoff, календарь, tray, сеть, звук, буфер обмена, уведомления, медиаконтроллер, folder selection, KRunner, tooltips и popups у края экрана.
+- COLOR со светлой, тёмной и контрастной акцентной схемой; фиксированный DARK при смене внешней схемы; шапки QtWidgets/Kirigami.
+- Масштабы 100/125/150/200%, смешанный масштаб двух мониторов, сохранение четырёх панелей после ручного применения.
+- Скриншоты до/после и отсутствие новых воспроизводимых ошибок в журнале живой сессии.
+- Konsole/Yakuake: проверена установка опциональных ресурсов, но полная runtime/визуальная совместимость приложений не заявляется.
+
+SDDM и `ROUNDED.layout.latte` сохранены как legacy, исключены из установки и
+заявленной совместимости. Union/Kvantum, Kitty, собственные иконки/курсоры,
+обои, lockscreen/OSD и Plasma Login Manager в объём миграции не входят.
+
+Перед ручным применением следует сохранить существующие `kdeglobals`,
+`kwinrc`, `plasmarc`, `kcminputrc`, `ksplashrc`, состояние `kdedefaults` и
+`plasma-org.kde.plasma.desktop-appletsrc`; отсутствующие файлы отмечать как
+отсутствующие. Выбирать только оформление без замены desktop layout.
+Восстанавливать настройки адресно вне сессии/при остановленных процессах.
+Один временный XDG_DATA_HOME не изолирует GUI от текущих D-Bus и конфигурации.
+
+**Итог:** кодовая миграция и перечисленные автоматические проверки выполнены.
+Полная визуальная приёмка Plasma 6.8 Wayland остаётся открытой; отсутствие
+собственного SVG или успешный smoke-test не доказывают визуальную совместимость.
