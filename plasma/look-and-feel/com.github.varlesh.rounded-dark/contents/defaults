@@ -15,4 +15,7 @@ library=org.kde.kwin.aurorae
 theme=__aurorae__svg__ROUNDED-DARK
 
 [kcminputrc][Mouse]
-cursorTheme=volantes_light_cursors
+cursorTheme=breeze_cursors
+
+[ksplashrc][KSplash]
+Theme=com.github.varlesh.rounded-dark

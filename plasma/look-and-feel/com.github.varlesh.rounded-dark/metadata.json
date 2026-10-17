@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "varlesh@gmail.com",
+                "Name": "Alexey Varfolomeev"
+            }
+        ],
+        "Category": "",
+        "Description": "ROUNDED DARK",
+        "Id": "com.github.varlesh.rounded-dark",
+        "License": "GPL-3.0",
+        "Name": "ROUNDED DARK",
+        "Version": "20220526",
+        "Website": "https://github.com/varlesh/rounded"
+    },
+    "X-KDE-fallbackPackage": "org.kde.breezedark.desktop",
+    "X-Plasma-APIVersion": "2"
+}

@@ -88,6 +88,34 @@ ForegroundNormal=35,38,39
 ForegroundPositive=0,110,40
 ForegroundVisited=48,28,95
 
+[Colors:Header]
+BackgroundAlternate=218,217,216
+BackgroundNormal=239,240,241
+DecorationFocus=158,83,150
+DecorationHover=158,83,150
+ForegroundActive=255,128,224
+ForegroundInactive=136,135,134
+ForegroundLink=0,87,174
+ForegroundNegative=191,3,3
+ForegroundNeutral=176,128,0
+ForegroundNormal=35,38,39
+ForegroundPositive=0,110,40
+ForegroundVisited=48,28,95
+
+[Colors:Header][Inactive]
+BackgroundAlternate=218,217,216
+BackgroundNormal=239,240,241
+DecorationFocus=158,83,150
+DecorationHover=158,83,150
+ForegroundActive=255,128,224
+ForegroundInactive=136,135,134
+ForegroundLink=0,87,174
+ForegroundNegative=191,3,3
+ForegroundNeutral=176,128,0
+ForegroundNormal=137,142,146
+ForegroundPositive=0,110,40
+ForegroundVisited=48,28,95
+
 [Colors:Window]
 BackgroundAlternate=218,217,216
 BackgroundNormal=239,240,241
@@ -103,7 +131,7 @@ ForegroundPositive=0,110,40
 ForegroundVisited=48,28,95
 
 [General]
-ColorScheme=Breeze Light
+ColorScheme=ROUNDED
 Name=ROUNDED
 shadeSortColumn=true
 

@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "Plasma/Theme",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "varlesh@gmail.com",
+                "Name": "Alexey Varfolomeev"
+            }
+        ],
+        "Category": "",
+        "Description": "ROUNDED DARK Plasma desktop theme",
+        "EnabledByDefault": true,
+        "Id": "ROUNDED-DARK",
+        "License": "GPL-3.0",
+        "Name": "ROUNDED DARK",
+        "Version": "20220919",
+        "Website": "https://github.com/varlesh/rounded"
+    },
+    "X-Plasma-API": "5.0"
+}

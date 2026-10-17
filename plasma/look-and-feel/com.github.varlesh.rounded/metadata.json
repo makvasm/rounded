@@ -1,0 +1,20 @@
+{
+    "KPackageStructure": "Plasma/LookAndFeel",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "varlesh@gmail.com",
+                "Name": "Alexey Varfolomeev"
+            }
+        ],
+        "Category": "",
+        "Description": "ROUNDED Style",
+        "Id": "com.github.varlesh.rounded",
+        "License": "GPL-3.0",
+        "Name": "ROUNDED",
+        "Version": "20220221",
+        "Website": "https://github.com/varlesh/rounded"
+    },
+    "X-KDE-fallbackPackage": "org.kde.breeze.desktop",
+    "X-Plasma-APIVersion": "2"
+}
