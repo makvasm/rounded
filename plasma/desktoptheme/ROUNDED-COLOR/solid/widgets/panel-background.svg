@@ -44,7 +44,7 @@
  <rect id="hint-top-margin" style="fill:#ff0000" width="4" height="2" x="93" y="76.5"/>
  <rect id="thick-hint-left-margin" style="fill:#ff00ff" width="4" height="8" x="105.5" y="-72" transform="rotate(90)"/>
  <rect id="hint-left-margin" style="fill:#ff0000" width="2" height="4" x="64" y="105.5"/>
- <rect id="thick-right-margin" style="fill:#ff00ff" width="4" height="8" x="105.5" y="-128" transform="rotate(90)"/>
+ <rect id="thick-hint-right-margin" style="fill:#ff00ff" width="4" height="8" x="105.5" y="-128" transform="rotate(90)"/>
  <rect id="hint-right-margin" style="fill:#ff0000" width="2" height="4" x="126" y="105.5"/>
  <rect id="thick-hint-bottom-margin" style="fill:#ff00ff" width="4" height="8" x="94" y="132.5"/>
  <rect id="hint-bottom-margin" style="fill:#ff0000" width="4" height="2" x="94" y="138.5"/>
