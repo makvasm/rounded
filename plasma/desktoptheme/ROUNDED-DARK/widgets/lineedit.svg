@@ -76,38 +76,38 @@
  <rect id="hover-hint-right-margin" style="opacity:1;fill:#ff0000" width="1" height="1" x="11" y="45"/>
  <g id="focus-topleft">
   <rect style="opacity:0.001" width="4" height="4" x="14" y="40"/>
-  <path d="M 14,44 A 4,4 0 0 1 18,40 L 18,42 A 2,2 0 0 0 16,44 Z" style="opacity:1;fill:#c478bc"/>
+  <path d="M 14,44 A 4,4 0 0 1 18,40 L 18,42 A 2,2 0 0 0 16,44 Z" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-top">
   <rect style="opacity:0.001" width="4" height="4" x="18" y="40"/>
-  <rect width="4" height="2" x="18" y="40" style="opacity:1;fill:#c478bc"/>
+  <rect width="4" height="2" x="18" y="40" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-topright">
   <rect style="opacity:0.001" width="4" height="4" x="22" y="40"/>
-  <path d="M 26,44 A 4,4 0 0 0 22,40 L 22,42 A 2,2 0 0 1 24,44 Z" style="opacity:1;fill:#c478bc"/>
+  <path d="M 26,44 A 4,4 0 0 0 22,40 L 22,42 A 2,2 0 0 1 24,44 Z" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-left">
   <rect style="opacity:0.001" width="4" height="4" x="14" y="44"/>
-  <rect width="2" height="4" x="14" y="44" style="opacity:1;fill:#c478bc"/>
+  <rect width="2" height="4" x="14" y="44" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-center">
   <rect style="opacity:0.001" width="4" height="4" x="18" y="44"/>
  </g>
  <g id="focus-right">
   <rect style="opacity:0.001" width="4" height="4" x="22" y="44"/>
-  <rect width="2" height="4" x="24" y="44" style="opacity:1;fill:#c478bc"/>
+  <rect width="2" height="4" x="24" y="44" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-bottomleft">
   <rect style="opacity:0.001" width="4" height="4" x="14" y="48"/>
-  <path d="M 14,48 A 4,4 0 0 0 18,52 L 18,50 A 2,2 0 0 1 16,48 Z" style="opacity:1;fill:#c478bc"/>
+  <path d="M 14,48 A 4,4 0 0 0 18,52 L 18,50 A 2,2 0 0 1 16,48 Z" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-bottom">
   <rect style="opacity:0.001" width="4" height="4" x="18" y="48"/>
-  <rect width="4" height="2" x="18" y="50" style="opacity:1;fill:#c478bc"/>
+  <rect width="4" height="2" x="18" y="50" style="opacity:1;fill:#d28cca"/>
  </g>
  <g id="focus-bottomright">
   <rect style="opacity:0.001" width="4" height="4" x="22" y="48"/>
-  <path d="M 26,48 A 4,4 0 0 1 22,52 L 22,50 A 2,2 0 0 0 24,48 Z" style="opacity:1;fill:#c478bc"/>
+  <path d="M 26,48 A 4,4 0 0 1 22,52 L 22,50 A 2,2 0 0 0 24,48 Z" style="opacity:1;fill:#d28cca"/>
  </g>
  <rect id="focus-hint-top-margin" style="opacity:1;fill:#ff0000" width="1" height="1" x="19" y="40"/>
  <rect id="focus-hint-bottom-margin" style="opacity:1;fill:#ff0000" width="1" height="1" x="19" y="51"/>
