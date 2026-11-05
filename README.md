@@ -11,11 +11,16 @@ replacement desktop layout or an application style engine.
 | Global theme | `com.github.varlesh.rounded` | `com.github.varlesh.rounded-dark` |
 | Plasma style | `ROUNDED-COLOR` | `ROUNDED-DARK` |
 | Color scheme | `ROUNDED` | `ROUNDEDDARK` |
-| Aurorae decoration | `ROUNDED` | `ROUNDED-DARK` |
+| Window decoration (global theme default) | Breeze | Aurorae `ROUNDED-DARK` |
+| Aurorae decorations shipped | `ROUNDED` (manual choice) | `ROUNDED-DARK` |
 
 Applications use Breeze, icons use Breeze/Breeze Dark, and cursors use
 `breeze_cursors`. COLOR follows the selected system palette. DARK deliberately
 ships its own `colors` and does not follow external palette changes.
+Aurorae colours are fixed in SVG, so the COLOR global theme selects the Breeze
+decoration, which follows the palette; with a light palette you may pick the
+light Aurorae `ROUNDED` manually. Pairing Aurorae `ROUNDED` with a dark palette
+gives light titlebars over dark windows.
 Konsole and Yakuake resources are optional. SDDM and `ROUNDED.layout.latte` are
 legacy resources: neither is installed or covered by Plasma 6.8 compatibility.
 Plasma Login Manager, lockscreen/OSD, wallpapers and application configuration
@@ -79,6 +84,19 @@ backup rather than performing a partial rollback. Mutating commands serialize
 access with a filesystem lock. Uninstall can leave empty resource directories;
 it deliberately keeps recovery records and backups.
 
+## Quick Application
+
+After `install`, open System Settings and choose, without replacing the
+desktop layout:
+
+1. Colors & Themes → Global Theme → ROUNDED or ROUNDED-DARK, with only the
+   appearance checkboxes enabled (leave "Desktop and window layout" off);
+2. or set the parts individually: Plasma Style (`ROUNDED-COLOR` or
+   `ROUNDED-DARK`), Colors (`ROUNDED` or `ROUNDEDDARK`) and Window
+   Decorations (Breeze for COLOR, `ROUNDED-DARK` for DARK).
+
+The section below describes the cautious path with configuration backups.
+
 ## Manual Application
 
 Before applying, back up existing `kdeglobals`, `kwinrc`, `plasmarc`,
@@ -107,10 +125,11 @@ sh scripts/check-theme.sh --runtime
 python3 scripts/test-install.py
 ```
 
-The checker validates 288 Plasma/Aurorae SVG files, duplicate IDs and SVG
+The checker validates 290 Plasma/Aurorae SVG files, duplicate IDs and SVG
 references, metadata, local defaults targets, panel frames and margin hints,
 matching COLOR/DARK panel geometry, Aurorae restore states and header color
-roles, plus definitions for used COLOR palette classes. It runs `qmllint`
+roles, plus definitions for used COLOR palette classes. It also guards the
+usability fixes described in [Usability and Guidelines](#usability-and-guidelines). It runs `qmllint`
 when available. `--runtime` additionally parses both
 global and desktop-theme packages with the installed KPackage tool and runs
 both splashes in the offscreen KSplash host, without applying the theme.
@@ -130,6 +149,34 @@ distinct Aurorae restore artwork, and preserves the working Aurorae desktop
 metadata. The Aurorae SVG loader uses the legacy metadata path; successful
 KPackage parsing is not used as an Aurorae rendering guarantee.
 
+### Usability and Guidelines
+
+Design decisions follow the KDE HIG
+([Accessibility](https://develop.kde.org/hig/accessibility/),
+[Communicating status changes](https://develop.kde.org/hig/status_changes/),
+[Simple by default](https://develop.kde.org/hig/simple_by_default/)) and the
+GNOME HIG ([UI styling](https://developer.gnome.org/hig/guidelines/ui-styling.html),
+[Buttons](https://developer.gnome.org/hig/patterns/controls/buttons.html),
+[Pointer and touch](https://developer.gnome.org/hig/guidelines/pointer-touch.html))
+as principles. Neither HIG gives numeric contrast limits; WCAG 2.x AA
+(4.5:1 for text, 3:1 for focus indicators) is this project's own measurable
+criterion.
+
+| Decision | Basis | Checked automatically |
+| --- | --- | --- |
+| Inactive Aurorae frames use a separate tone; title text ≥ 4.5:1 | Focus must be visibly distinct | Yes |
+| 2px side/bottom Aurorae borders; 24px titlebar buttons | Targets large enough for different devices and abilities | Border width only |
+| Close button is monochrome at rest, red only on hover/press | Red marks errors and dangerous actions; avoid competing colour | Yes |
+| Minimized tasks: 1px outline instead of the normal fill | Do not rely on colour alone; use shape | Yes |
+| Accent focus ring on buttons, text fields and radio buttons | Everything keyboard-usable with visible focus | Yes |
+| Colour-scheme text roles ≥ 4.5:1, DecorationFocus ≥ 3:1 | Readability, WCAG criterion | Yes |
+| COLOR global theme uses Breeze decoration | Colours follow the user's scheme | Yes |
+| Aurorae `Animation=0` kept | No evidence Aurorae honours the global animation setting | No |
+
+Manual checks still required: keyboard-only navigation, system font size 14,
+globally disabled animations, title text clipping, and translucent panels on
+busy wallpapers with `ContrastEffect` disabled.
+
 ### Deliberate Fallbacks
 
 The non-invasive resource inventory established these consumer contracts:
@@ -142,9 +189,12 @@ The non-invasive resource inventory established these consumer contracts:
 | KSplash host | `contents/splash/Splash.qml`, `stage` property | Preserve animation and stage contract; unversioned QtQuick |
 
 The installed default Plasma style supplies resources absent from ROUNDED:
-`plasmoidheading`, `calendar`, `margins-highlight`, `action-overlays`,
-`actionbutton`, `media-delegate`, `radiobutton`, `frame`, `toolbar`,
-`translucentbackground`, `dragger` and `monitor`. No Breeze artwork has been
+`calendar`, `margins-highlight`, `action-overlays`,
+`actionbutton`, `media-delegate`, `frame`, `toolbar`,
+`translucentbackground`, `dragger` and `monitor`. ROUNDED ships its own
+`radiobutton`. `plasmoidheading` is absent on purpose: `PlasmoidHeading.qml`
+draws it only from the same image set as `dialogs/background`, so headings
+stay flat instead of mixing in the default style. No Breeze artwork has been
 bulk-copied. Auxiliary resources such as `analog_meter`, `branding`, `picker`,
 `plot-background`, `timer` and `weather/wind-arrows` remain on the standard
 fallback path, not individually visually verified. The installed folder
