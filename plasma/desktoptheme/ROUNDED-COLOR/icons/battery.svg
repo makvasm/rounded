@@ -13,6 +13,9 @@
         .ColorScheme-Background {
         color:#31363b;
       }
+      .ColorScheme-PositiveText {
+        color:#27ae60;
+      }
       .ColorScheme-ButtonBackground {
         color:#444c53;
       }
@@ -22,7 +25,7 @@
   <rect  style="opacity:0.001" width="22" height="22" x="169.54" y="404.5"/>
   <g  transform="translate(-90.000077,-22.000057)">
    <rect  style="opacity:1;fill:currentColor" class="ColorScheme-NegativeText" width="8" height="8" x="273.54" y="440.5" ry=".8"/>
-   <path  style="opacity:1;fill:#ffffff" d="m 275.24275,441.50504 -0.70703,0.70703 2.29297,2.29297 -2.29297,2.29297 0.70703,0.70703 2.29297,-2.29297 2.29297,2.29297 0.70703,-0.70703 -2.29297,-2.29297 2.29297,-2.29297 -0.70703,-0.70703 -2.29297,2.29297 z"/>
+   <path class="ColorScheme-Background"  style="opacity:1;fill:currentColor" d="m 275.24275,441.50504 -0.70703,0.70703 2.29297,2.29297 -2.29297,2.29297 0.70703,0.70703 2.29297,-2.29297 2.29297,2.29297 0.70703,-0.70703 -2.29297,-2.29297 2.29297,-2.29297 -0.70703,-0.70703 -2.29297,2.29297 z"/>
   </g>
  </g>
  <g id="22-22-Battery" transform="translate(-246.53999,-426.5)">
@@ -133,16 +136,16 @@
   <rect  style="opacity:0.001" width="32" height="32" x="0" y="0"/>
   <g  transform="translate(9.9999971,10)">
    <rect  style="opacity:1;fill:currentColor" class="ColorScheme-NegativeText" width="12" height="12" x="10" y="10" ry="1.2"/>
-   <path  style="opacity:1;fill:#ffffff" d="M 12.353516,11.646484 11.646484,12.353516 15.292969,16 11.646484,19.646484 12.353516,20.353516 16,16.707031 19.646484,20.353516 20.353516,19.646484 16.707031,16 20.353516,12.353516 19.646484,11.646484 16,15.292969 Z"/>
+   <path class="ColorScheme-Background"  style="opacity:1;fill:currentColor" d="M 12.353516,11.646484 11.646484,12.353516 15.292969,16 11.646484,19.646484 12.353516,20.353516 16,16.707031 19.646484,20.353516 20.353516,19.646484 16.707031,16 20.353516,12.353516 19.646484,11.646484 16,15.292969 Z"/>
   </g>
  </g>
  <g id="AcAdapter" transform="translate(-128,-6.75e-6)">
   <rect  style="opacity:0.001" width="32" height="32" x="0" y="0"/>
-  <path  style="opacity:1;fill:#2abb9b" d="m 16,11 -3,7 h 3 v 5 l 3,-7 h -3 z"/>
+  <path class="ColorScheme-PositiveText"  style="opacity:1;fill:currentColor" d="m 16,11 -3,7 h 3 v 5 l 3,-7 h -3 z"/>
  </g>
  <g id="22-22-AcAdapter" transform="translate(-133,-27.000007)">
   <rect  style="opacity:0.001" width="22" height="22" x="5" y="5"/>
-  <path  style="opacity:1;fill:#2abb9b" d="m 16,12 -2,5 h 2 v 3 l 2,-5 h -2 z"/>
+  <path class="ColorScheme-PositiveText"  style="opacity:1;fill:currentColor" d="m 16,12 -2,5 h 2 v 3 l 2,-5 h -2 z"/>
  </g>
  <g id="profile-performance">
   <rect style="opacity:0.001"  width="22" height="22" x="-150" y="-22"/>

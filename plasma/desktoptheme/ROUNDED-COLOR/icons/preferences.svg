@@ -13,6 +13,9 @@
         .ColorScheme-Background {
         color:#31363b;
       }
+      .ColorScheme-HighlightedText {
+        color:#ffffff;
+      }
       .ColorScheme-ButtonBackground {
         color:#444c53;
       }
@@ -21,7 +24,7 @@
  <g id="22-22-preferences-desktop-notification" transform="translate(32,-62)">
   <rect  style="opacity:0.001" width="22" height="22" x="0" y="40"/>
   <path  style="opacity:1;fill:currentColor" class="ColorScheme-Highlight" d="m 11,43 c -4.418278,0 -8,3.581722 -8,8 0,4.418278 3.581722,8 8,8 4.418278,0 8,-3.581722 8,-8 0,-4.418278 -3.581722,-8 -8,-8 z"/>
-  <path  style="fill:#ffffff" d="m 10,47 v 6 h 2 v -6 z m 1,7 c -0.453152,0 -1,0.518427 -1,0.980469 C 10,55.442512 10.546848,56 11,56 11.453152,56 12,55.442512 12,54.980469 12,54.518427 11.453152,54 11,54 Z"/>
+  <path class="ColorScheme-HighlightedText"  style="fill:currentColor" d="m 10,47 v 6 h 2 v -6 z m 1,7 c -0.453152,0 -1,0.518427 -1,0.980469 C 10,55.442512 10.546848,56 11,56 11.453152,56 12,55.442512 12,54.980469 12,54.518427 11.453152,54 11,54 Z"/>
  </g>
  <g id="22-22-preferences-system-windows" transform="translate(59,-27)">
   <rect  style="opacity:0.001" width="22" height="22" x="5" y="5"/>
@@ -50,7 +53,7 @@
  <g id="preferences-desktop-notification" transform="translate(32)">
   <rect  style="opacity:0.001" width="32" height="32" x="0" y="0"/>
   <path  style="opacity:1;fill:currentColor" class="ColorScheme-Highlight" d="M 16,3.9999999 C 9.3725828,3.9999999 3.9999996,9.372583 3.9999996,16 3.9999996,22.627418 9.3725828,28 16,28 22.627417,28 28,22.627418 28,16 28,9.372583 22.627417,3.9999999 16,3.9999999 Z"/>
-  <path  style="fill:#ffffff;stroke-width:1.22474468" d="m 15,9 v 9 h 2 V 9 Z m 1,11 c -0.453152,0 -1,0.518427 -1,0.980469 C 15,21.442511 15.546848,22 16,22 16.453152,22 17,21.442511 17,20.980469 17,20.518427 16.453152,20 16,20 Z"/>
+  <path class="ColorScheme-HighlightedText"  style="fill:currentColor;stroke-width:1.22474468" d="m 15,9 v 9 h 2 V 9 Z m 1,11 c -0.453152,0 -1,0.518427 -1,0.980469 C 15,21.442511 15.546848,22 16,22 16.453152,22 17,21.442511 17,20.980469 17,20.518427 16.453152,20 16,20 Z"/>
  </g>
  <g id="preferences-system-windows" transform="translate(64)">
   <rect  style="opacity:0.001" width="32" height="32" x="0" y="0"/>
