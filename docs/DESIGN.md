@@ -42,7 +42,7 @@ ROUNDED — мягкая, плоская и спокойная тема. Ниж�
 | Выделение (`viewitem`) | Highlight с горизонтальным затуханием непрозрачности 1 → 0.2 | градиент `#a22f66 → #1b77a0` при opacity 0.8 |
 | Декорация в глобальной теме | Breeze, следует палитре | Aurorae `ROUNDED-DARK` |
 | Иконки приложений | `breeze` | `breeze-dark` |
-| Значки панели и лотка (`icons/`) | `ColorScheme-*` | `#eff0f1`, семантика жёстко задана |
+| Значки панели и лотка (`icons/`) | только `ColorScheme-*` | `#eff0f1` и фирменные цвета DARK |
 | Фон заставки | `#eff0f1` | `#31363b` |
 
 **Правило COLOR.** В `ROUNDED-COLOR` не появляется ни одного нового
@@ -253,10 +253,17 @@ pressed (0.28), inactive (приглушена), deactivated (0.5). Все мо�
 | --- | --- | --- | --- |
 | Основной рисунок | `ColorScheme-Text` | `#eff0f1` | почти все |
 | Неактивная часть шкалы | тот же цвет при `opacity:0.5` | то же | незаполненные деления сигнала Wi-Fi, громкости |
-| Ошибка, отключено, критично | `ColorScheme-NegativeText` | `#da4453` | `audio-volume-muted`, батарея `Fill0`/`Fill10`, `network-*-off`, `notifications-disabled`, `plasmavault_error`, `*-quota-critical`, `media-record` |
-| Новое, доступно, активный процесс | `ColorScheme-Highlight` | `#3daee9` | `mail-unread-new`, `network-*-available`, `notification-progress-active`, `update-low`, OSD |
-| Предупреждение | `#f67400` | `#f67400` | `*-limited`, `quota-low`, `update-medium`, `user-busy` |
-| Статус пользователя, питание | `#2abb9b`, `#fdbc4b`, `#9b59b6` | то же | `user-online/away/away-extended`, `AcAdapter` |
+| Ошибка, отключено, критично, «занят» | `ColorScheme-NegativeText` | `#f5828a` (245,130,138) | `audio-volume-muted`, батарея `Fill0`/`Fill10`, `network-*-off`, `notifications-disabled`, `plasmavault_error`, `*-quota-critical`, `media-record`, `user-busy` |
+| Новое, доступно, активный процесс | `ColorScheme-Highlight` | `#d28cca` (фирменный акцент DARK) | `mail-unread-new`, `network-*-available`, `notification-progress-active`, `update-low`, `user-invisible`, OSD |
+| Предупреждение, «отошёл» | `ColorScheme-NeutralText` | `#f68c28` (246,140,40) | `*-limited`, `quota-low`, `update-medium`, `user-away` |
+| В сети, питание подключено | `ColorScheme-PositiveText` | `#3cc86e` (60,200,110) | `user-online`, `AcAdapter` |
+| «Отошёл надолго», «не в сети» | цвет текста при 0.5 | `#eff0f1` при 0.5 | `user-away-extended`, `user-offline` |
+| Знак на цветном круге | `ColorScheme-HighlightedText` / `ColorScheme-Background` | `#31363b` | `preferences-desktop-notification`, батарея `Unavailable` |
+
+Цвета DARK взяты из ролей `ROUNDEDDARK.colors` и дают не меньше 3:1 к фону
+панели `#31363b`. Тёмный фирменный `#a22f66` для значков не подходит: на
+панели он даёт около 1.7:1. Статусы пользователя различаются не только
+цветом, но и бейджем (галочка, часы, стрелка, карандаш, три точки, минус).
 
 Отключённое состояние показывается не только цветом: поверх значка
 проводится косая черта (например, перечёркнутый колокол
@@ -271,7 +278,8 @@ pressed (0.28), inactive (приглушена), deactivated (0.5). Все мо�
 - В COLOR — только классы `ColorScheme-Text`, `Highlight`, `NegativeText`,
   `NeutralText`, `PositiveText`. Никаких фирменных цветов: значок должен
   перекрашиваться вместе с палитрой.
-- В DARK — те же формы с цветами раздела 4.
+- В DARK — те же формы и цвета из таблицы выше; каждый цвет ≥ 3:1 к
+  `#31363b`.
 - Цвет — только для состояния: ошибка, предупреждение, новое. Обычное
   состояние монохромное. Отключение дополнительно отмечается чертой или
   формой.
@@ -295,6 +303,8 @@ pressed (0.28), inactive (приглушена), deactivated (0.5). Все мо�
 Критерий проекта — WCAG 2.x AA; подробности и источники в
 [README → Usability and Guidelines](../README.md#usability-and-guidelines).
 
+- Значки панели: в COLOR нет жёстких цветов; в DARK каждый цвет
+  ≥ 3:1 к фону панели.
 - Текст к своему фону ≥ 4.5:1: все роли `Foreground*` (включая
   `ForegroundVisited` и `ForegroundActive`) в группах Window, View,
   Tooltip, Header, Header/Inactive, Complementary и Button, а также
@@ -318,8 +328,6 @@ pressed (0.28), inactive (приглушена), deactivated (0.5). Все мо�
 | Отклонение | Где | Что сделать при следующем изменении |
 | --- | --- | --- |
 | Запасной акцент в таблицах стилей COLOR — синий Breeze `#3daee9`, а фирменный — фиолетовый | `ROUNDED-COLOR/**/*.svg` | оставить: виден только без палитры |
-| В значках COLOR предупреждение и статусы заданы жёсткими цветами Breeze (`#f67400`, `#2abb9b`, `#fdbc4b`, `#9b59b6`) | `ROUNDED-COLOR/icons/{disk,quota,update,network,user,battery}.svg` | заменить на `ColorScheme-NeutralText` / `PositiveText`; для away / away-extended решить отдельно |
-| В значках DARK акцент и ошибка — цвета Breeze `#3daee9` и `#da4453`, а не палитра DARK (`#a22f66`, 245,130,138) | `ROUNDED-DARK/icons/*.svg` | решить, должны ли значки DARK носить фирменный акцент; затем заменить и проверить контраст на панели |
 | Часть виджетов берётся из стиля Plasma по умолчанию (`calendar`, `frame`, `toolbar` и др.) | см. README → Deliberate Fallbacks | при отрисовке своих применять шкалы разделов 3–6 |
 
 ## 11. Контрольный список изменения
