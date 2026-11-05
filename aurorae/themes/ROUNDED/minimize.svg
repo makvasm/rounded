@@ -5,12 +5,12 @@
  </g>
  <g id="hover-center" transform="translate(22)">
   <rect style="opacity:0.001" width="22" height="22" x="0" y="0"/>
-  <rect style="opacity:0.1" width="22" height="22" x="0" y="0" rx="6" ry="6"/>
+  <rect style="opacity:0.15" width="22" height="22" x="0" y="0" rx="6" ry="6"/>
   <path style="opacity:1;fill:#232627" transform="translate(-22)" d="M 33 3 C 28.581722 3.0000002 25 6.5817221 25 11 C 25 15.418278 28.581722 19 33 19 C 37.418278 19 41 15.418278 41 11 C 41 6.5817221 37.418278 3.0000002 33 3 z M 33 4 C 36.865993 3.9999999 40 7.1340067 40 11 C 40 14.865993 36.865993 18 33 18 C 29.134007 18 26 14.865993 26 11 C 26 7.1340067 29.134007 3.9999999 33 4 z M 33 8 A 3 3 0 0 0 30 11 A 3 3 0 0 0 33 14 A 3 3 0 0 0 36 11 A 3 3 0 0 0 33 8 z"/>
  </g>
  <g id="pressed-center" transform="translate(44)">
   <rect style="opacity:0.001" width="22" height="22" x="0" y="0"/>
-  <rect style="opacity:0.2" width="22" height="22" x="0" y="0" rx="6" ry="6"/>
+  <rect style="opacity:0.28" width="22" height="22" x="0" y="0" rx="6" ry="6"/>
   <path style="opacity:1;fill:#232627" transform="translate(-44)" d="M 55 3 C 50.581722 3.0000002 47 6.5817221 47 11 C 47 15.418278 50.581722 19 55 19 C 59.418278 19 63 15.418278 63 11 C 63 6.5817221 59.418278 3.0000002 55 3 z M 55 4 C 58.865993 3.9999999 62 7.1340067 62 11 C 62 14.865993 58.865993 18 55 18 C 51.134007 18 48 14.865993 48 11 C 48 7.1340067 51.134007 3.9999999 55 4 z M 55 8 A 3 3 0 0 0 52 11 A 3 3 0 0 0 55 14 A 3 3 0 0 0 58 11 A 3 3 0 0 0 55 8 z"/>
  </g>
  <g id="inactive-center" transform="translate(66)">
