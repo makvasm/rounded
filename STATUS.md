@@ -203,6 +203,8 @@ Simple by default) и GNOME HIG (UI styling, Buttons, Pointer and touch).
 | Радиокнопки смешивали default `actionbutton` и точку ROUNDED | Собственный `radiobutton.svg` | Согласованность поверхностей |
 | Низкий контраст ролей схем (светлая Inactive/Neutral 3.1; тёмная Link 2.8, Negative 2.9) | Все текстовые роли Window/View/Tooltip/Header/Complementary ≥ 4.5:1; `DecorationFocus` ≥ 3:1 (тёмный 210,140,202) | Читаемость |
 | Aurorae COLOR не следует палитре | Глобальная тема COLOR выбирает Breeze-декорацию | Цвета следуют схеме пользователя |
+| Глиф «Восстановить» без кольца, в отличие от остальных кнопок | Кольцо r=8 с двумя перекрывающимися квадратами внутри | Согласованность ([docs/DESIGN.md](docs/DESIGN.md), раздел 7) |
+| Неактивный заголовок Breeze/`[WM]` 2.9:1 и 3.5:1; `ForegroundActive` светлой схемы 1.95:1; `ForegroundVisited` и группа Button тёмной схемы до 2.5:1 | Неактивный заголовок 95,98,101 / 166,169,172; `ForegroundActive` 202,0,153; в DARK `ForegroundVisited` 151,162,163, роли группы Button светлее при том же оттенке; Complementary `ForegroundActive` 246,140,40. Чекер проверяет все роли во всех группах и `[WM]` | Читаемость, критерий WCAG |
 
 `Animation=0` в Aurorae сохранён: подтверждения, что Aurorae учитывает
 глобальную скорость анимации, не найдено. `toolbutton-focus` не нужен:
