@@ -177,6 +177,12 @@ Manual checks still required: keyboard-only navigation, system font size 14,
 globally disabled animations, title text clipping, and translucent panels on
 busy wallpapers with `ContrastEffect` disabled.
 
+### Design Identity
+
+The visual language (radius scale, colour roles, state ladder, window
+decoration glyphs) and a pre-commit checklist for keeping the style are in
+[docs/DESIGN.md](docs/DESIGN.md).
+
 ### Deliberate Fallbacks
 
 The non-invasive resource inventory established these consumer contracts:
