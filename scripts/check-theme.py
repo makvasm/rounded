@@ -134,6 +134,12 @@ def check_usability(theme, decoration, scheme):
             assert f'{prefix}-{part}' in ids, f'{theme}: switch {prefix}-{part} (Plasma 6 SwitchIndicator)'
     for element in ('handle', 'handle-hover', 'handle-pressed', 'handle-focus', 'handle-shadow'):
         assert element in ids, f'{theme}: switch {element}'
+    if 'DARK' in theme.name:
+        accent = '#%02x%02x%02x' % rgb(ini(theme / 'colors')['Colors:Selection']['BackgroundNormal'])
+        for svg in sorted((theme / 'widgets').glob('*.svg')):
+            text = svg.read_text().lower()
+            for old in ('#a22f66', '#1b77a0'):
+                assert old not in text, f'{svg}: accent must be solid {accent}, not the old gradient {old}'
     colors = ini(ROOT / 'color-schemes' / (scheme + '.colors'))
     for group in ('Colors:Window', 'Colors:View', 'Colors:Tooltip', 'Colors:Header',
                   'Colors:Header][Inactive', 'Colors:Complementary', 'Colors:Button'):
