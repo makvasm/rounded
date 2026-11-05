@@ -167,7 +167,7 @@ criterion.
 | Inactive Aurorae frames use a separate tone; title text ≥ 4.5:1 | Focus must be visibly distinct | Yes |
 | 2px side/bottom Aurorae borders; 24px titlebar buttons | Targets large enough for different devices and abilities | Border width only |
 | Close button is monochrome at rest, red only on hover/press | Red marks errors and dangerous actions; avoid competing colour | Yes |
-| Minimized tasks: 1px outline instead of the normal fill | Do not rely on colour alone; use shape | Yes |
+| Minimized tasks: 1px outline (≥ 3:1 on a solid panel) instead of the normal fill; normal 0.14 < hover/focus 0.22 | Do not rely on colour alone; use shape; keep hierarchy | Yes |
 | Accent focus ring on buttons, text fields and radio buttons | Everything keyboard-usable with visible focus | Yes |
 | Colour-scheme text roles ≥ 4.5:1, DecorationFocus ≥ 3:1 | Readability, WCAG criterion | Yes |
 | COLOR global theme uses Breeze decoration | Colours follow the user's scheme | Yes |

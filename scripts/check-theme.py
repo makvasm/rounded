@@ -89,6 +89,22 @@ def check_usability(theme, decoration, scheme):
         minimized = re.sub(r'id="[^"]*"', '', subtree_text(tasks, prefix + 'minimized-top'))
         assert re.sub(r'y="[^"]*"', '', normal) != re.sub(r'y="[^"]*"', '', minimized), \
             f'{tasks}: {prefix}normal and minimized look identical'
+    # Effective opacity of the task overlay (fill-opacity times group opacity),
+    # blended over the scheme's window colour on a solid panel.
+    def overlay(ident):
+        text = subtree_text(tasks, ident)
+        fill = float(re.search(r'fill-opacity:([0-9.]+)', text).group(1))
+        group = re.match(r'<[^>]*style="opacity:([0-9.]+)', text)
+        return fill * (float(group.group(1)) if group else 1)
+    window = ini(ROOT / 'color-schemes' / (scheme + '.colors'))['Colors:Window']
+    ink, panel = rgb(window['ForegroundNormal']), rgb(window['BackgroundNormal'])
+    for prefix in ('', 'north-', 'east-', 'west-'):
+        normal, hover = overlay(prefix + 'normal-center'), overlay(prefix + 'hover-top')
+        assert normal < hover, f'{tasks}: {prefix}hover ({hover}) must exceed normal ({normal})'
+        alpha = overlay(prefix + 'minimized-top')
+        blended = tuple(round(p * (1 - alpha) + i * alpha) for p, i in zip(panel, ink))
+        ratio = contrast(blended, panel)
+        assert ratio >= 3, f'{tasks}: {prefix}minimized outline contrast {ratio:.2f} < 3'
     ids = {e.get('id') for e in ET.parse(theme / 'widgets/lineedit.svg').iter()}
     for prefix in ('hover', 'focus'):
         for part in ('center', 'top', 'bottom', 'left', 'right',
