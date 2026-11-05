@@ -23,21 +23,21 @@ BackgroundAlternate=77,77,77
 BackgroundNormal=68,76,83
 DecorationFocus=210,140,202
 DecorationHover=210,140,202
-ForegroundActive=61,174,233
+ForegroundActive=118,198,239
 ForegroundInactive=189,195,199
-ForegroundLink=61,174,233
-ForegroundNegative=245,130,138
-ForegroundNeutral=246,140,40
+ForegroundLink=118,198,239
+ForegroundNegative=248,168,173
+ForegroundNeutral=249,173,101
 ForegroundNormal=239,240,241
-ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundPositive=96,210,137
+ForegroundVisited=182,190,190
 
 [Colors:Complementary]
 BackgroundAlternate=59,64,69
 BackgroundNormal=49,54,59
 DecorationFocus=30,146,255
 DecorationHover=61,174,230
-ForegroundActive=246,116,0
+ForegroundActive=246,140,40
 ForegroundInactive=175,176,179
 ForegroundLink=61,174,230
 ForegroundNegative=245,130,138
@@ -72,7 +72,7 @@ ForegroundNegative=245,130,138
 ForegroundNeutral=246,140,40
 ForegroundNormal=239,240,241
 ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundVisited=151,162,163
 
 [Colors:View]
 BackgroundAlternate=49,54,59
@@ -86,7 +86,7 @@ ForegroundNegative=245,130,138
 ForegroundNeutral=246,140,40
 ForegroundNormal=239,240,241
 ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundVisited=151,162,163
 
 [Colors:Header]
 BackgroundAlternate=77,77,77
@@ -100,7 +100,7 @@ ForegroundNegative=245,130,138
 ForegroundNeutral=246,140,40
 ForegroundNormal=239,240,241
 ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundVisited=151,162,163
 
 [Colors:Header][Inactive]
 BackgroundAlternate=77,77,77
@@ -112,9 +112,9 @@ ForegroundInactive=189,195,199
 ForegroundLink=61,174,233
 ForegroundNegative=245,130,138
 ForegroundNeutral=246,140,40
-ForegroundNormal=127,140,141
+ForegroundNormal=166,169,172
 ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundVisited=151,162,163
 
 [Colors:Window]
 BackgroundAlternate=77,77,77
@@ -128,7 +128,7 @@ ForegroundNegative=245,130,138
 ForegroundNeutral=246,140,40
 ForegroundNormal=239,240,241
 ForegroundPositive=60,200,110
-ForegroundVisited=127,140,141
+ForegroundVisited=151,162,163
 
 [General]
 ColorScheme=Breeze Dark
@@ -144,4 +144,4 @@ activeBlend=255,255,255
 activeForeground=239,240,241
 inactiveBackground=49,54,59
 inactiveBlend=75,71,67
-inactiveForeground=127,140,141
+inactiveForeground=166,169,172

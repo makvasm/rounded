@@ -117,14 +117,19 @@ def check_usability(theme, decoration, scheme):
     for element in ('normal', 'checked', 'hover', 'focus', 'symbol', 'shadow', 'hint-size'):
         assert element in ids, f'{theme}: radiobutton {element}'
     colors = ini(ROOT / 'color-schemes' / (scheme + '.colors'))
-    for group in ('Colors:Window', 'Colors:View', 'Colors:Tooltip', 'Colors:Header', 'Colors:Complementary'):
+    for group in ('Colors:Window', 'Colors:View', 'Colors:Tooltip', 'Colors:Header',
+                  'Colors:Header][Inactive', 'Colors:Complementary', 'Colors:Button'):
         background = rgb(colors[group]['BackgroundNormal'])
-        for role in ('ForegroundNormal', 'ForegroundInactive', 'ForegroundLink',
-                     'ForegroundNegative', 'ForegroundNeutral', 'ForegroundPositive'):
+        for role in ('ForegroundNormal', 'ForegroundInactive', 'ForegroundLink', 'ForegroundVisited',
+                     'ForegroundActive', 'ForegroundNegative', 'ForegroundNeutral', 'ForegroundPositive'):
             ratio = contrast(rgb(colors[group][role]), background)
             assert ratio >= 4.5, f'{scheme}: {group} {role} contrast {ratio:.2f} < 4.5'
         ratio = contrast(rgb(colors[group]['DecorationFocus']), background)
         assert ratio >= 3, f'{scheme}: {group} DecorationFocus contrast {ratio:.2f} < 3'
+    wm = colors['WM']
+    for state in ('active', 'inactive'):
+        ratio = contrast(rgb(wm[state + 'Foreground']), rgb(wm[state + 'Background']))
+        assert ratio >= 4.5, f'{scheme}: WM {state} title contrast {ratio:.2f} < 4.5'
 
 
 def check(runtime=False):
