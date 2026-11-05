@@ -127,6 +127,13 @@ def check_usability(theme, decoration, scheme):
     ids = {e.get('id') for e in ET.parse(theme / 'widgets/radiobutton.svg').iter()}
     for element in ('normal', 'checked', 'hover', 'focus', 'symbol', 'shadow', 'hint-size'):
         assert element in ids, f'{theme}: radiobutton {element}'
+    ids = {e.get('id') for e in ET.parse(theme / 'widgets/switch.svg').iter()}
+    for prefix in ('inactive', 'active'):
+        for part in ('center', 'top', 'bottom', 'left', 'right',
+                     'topleft', 'topright', 'bottomleft', 'bottomright'):
+            assert f'{prefix}-{part}' in ids, f'{theme}: switch {prefix}-{part} (Plasma 6 SwitchIndicator)'
+    for element in ('handle', 'handle-hover', 'handle-pressed', 'handle-focus', 'handle-shadow'):
+        assert element in ids, f'{theme}: switch {element}'
     colors = ini(ROOT / 'color-schemes' / (scheme + '.colors'))
     for group in ('Colors:Window', 'Colors:View', 'Colors:Tooltip', 'Colors:Header',
                   'Colors:Header][Inactive', 'Colors:Complementary', 'Colors:Button'):
