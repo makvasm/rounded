@@ -36,6 +36,81 @@ def frame_geometry(path, attributes):
     return parts
 
 
+def rgb(value):
+    value = value.strip()
+    if value.startswith('#'):
+        return tuple(int(value[i:i + 2], 16) for i in (1, 3, 5))
+    return tuple(int(part) for part in value.split(',')[:3])
+
+
+def contrast(first, second):
+    """WCAG 2.x contrast ratio of two sRGB colours."""
+    def luminance(color):
+        channels = [c / 255 for c in color]
+        channels = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in channels]
+        return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+    high, low = sorted((luminance(first), luminance(second)), reverse=True)
+    return (high + 0.05) / (low + 0.05)
+
+
+def element_fill(path, ident):
+    element = ET.parse(path).getroot().find(f".//*[@id='{ident}']")
+    match = re.search(r'fill:(#[0-9a-fA-F]{6})', element.get('style', ''))
+    assert match, f'{path}: {ident} has no solid fill'
+    return rgb(match.group(1))
+
+
+def subtree_text(path, ident):
+    element = ET.parse(path).getroot().find(f".//*[@id='{ident}']")
+    assert element is not None, f'{path}: missing {ident}'
+    return ET.tostring(element, encoding='unicode')
+
+
+def check_usability(theme, decoration, scheme):
+    """Guard the accessibility fixes: contrast, focus and state distinctness."""
+    aurorae = ROOT / 'aurorae/themes' / decoration
+    rc = ini(aurorae / (decoration + 'rc'))
+    svg = aurorae / 'decoration.svg'
+    active, inactive = element_fill(svg, 'decoration-center'), element_fill(svg, 'decoration-inactive-center')
+    assert active != inactive, f'{svg}: active and inactive frames are identical'
+    for key, background in (('ActiveTextColor', active), ('InactiveTextColor', inactive)):
+        ratio = contrast(rgb(rc['General'][key]), background)
+        assert ratio >= 4.5, f'{decoration}: {key} contrast {ratio:.2f} < 4.5'
+    for edge in ('Left', 'Right', 'Bottom'):
+        assert int(rc['Layout']['Border' + edge]) >= 2, f'{decoration}: Border{edge} < 2'
+    close = aurorae / 'close.svg'
+    for state, red in (('active', False), ('inactive', False), ('deactivated', False),
+                       ('hover', True), ('pressed', True)):
+        text = subtree_text(close, state + '-center').lower()
+        assert (('#da4453' in text) or ('#b52f3c' in text)) == red, f'{close}: {state} red={not red}'
+    tasks = theme / 'widgets/tasks.svg'
+    for prefix in ('', 'north-', 'east-', 'west-'):
+        normal = re.sub(r'id="[^"]*"', '', subtree_text(tasks, prefix + 'normal-top'))
+        minimized = re.sub(r'id="[^"]*"', '', subtree_text(tasks, prefix + 'minimized-top'))
+        assert re.sub(r'y="[^"]*"', '', normal) != re.sub(r'y="[^"]*"', '', minimized), \
+            f'{tasks}: {prefix}normal and minimized look identical'
+    ids = {e.get('id') for e in ET.parse(theme / 'widgets/lineedit.svg').iter()}
+    for prefix in ('hover', 'focus'):
+        for part in ('center', 'top', 'bottom', 'left', 'right',
+                     'topleft', 'topright', 'bottomleft', 'bottomright'):
+            assert f'{prefix}-{part}' in ids, f'{theme}: lineedit {prefix}-{part}'
+    button = theme / 'widgets/button.svg'
+    assert subtree_text(button, 'focus-top') != subtree_text(button, 'hover-top').replace('hover', 'focus')
+    assert 'url(' not in subtree_text(button, 'focus-top'), f'{button}: focus is a shadow, not a ring'
+    ids = {e.get('id') for e in ET.parse(theme / 'widgets/radiobutton.svg').iter()}
+    for element in ('normal', 'checked', 'hover', 'focus', 'symbol', 'shadow', 'hint-size'):
+        assert element in ids, f'{theme}: radiobutton {element}'
+    colors = ini(ROOT / 'color-schemes' / (scheme + '.colors'))
+    for group in ('Colors:Window', 'Colors:View', 'Colors:Tooltip', 'Colors:Header', 'Colors:Complementary'):
+        background = rgb(colors[group]['BackgroundNormal'])
+        for role in ('ForegroundNormal', 'ForegroundInactive', 'ForegroundLink',
+                     'ForegroundNegative', 'ForegroundNeutral', 'ForegroundPositive'):
+            ratio = contrast(rgb(colors[group][role]), background)
+            assert ratio >= 4.5, f'{scheme}: {group} {role} contrast {ratio:.2f} < 4.5'
+        ratio = contrast(rgb(colors[group]['DecorationFocus']), background)
+        assert ratio >= 3, f'{scheme}: {group} DecorationFocus contrast {ratio:.2f} < 3'
+
+
 def check(runtime=False):
     svgs = list(ROOT.glob('plasma/**/*.svg')) + list(ROOT.glob('aurorae/**/*.svg'))
     for path in svgs:
@@ -110,6 +185,7 @@ def check(runtime=False):
             ids = {e.get('id') for e in ET.parse(aurorae / (button + '.svg')).iter()}
             for state in ('active', 'inactive', 'hover', 'pressed', 'deactivated'):
                 assert state + '-center' in ids, str(aurorae)
+        check_usability(theme, decoration, scheme)
         colors = ini(ROOT / 'color-schemes' / (scheme + '.colors'))
         assert colors['General']['ColorScheme'] == scheme
         for section in ('Colors:Header', 'Colors:Header][Inactive'):
@@ -142,7 +218,7 @@ def check(runtime=False):
             path = ROOT / 'plasma/desktoptheme' / name / variant / 'widgets/panel-background.svg'
             panels.append(frame_geometry(path, geometry))
         assert panels[0] == panels[1], f'COLOR/DARK panel geometry differs: {variant}'
-    print(f'PASS: {len(svgs)} SVGs, metadata, defaults, panels, Aurorae and color roles')
+    print(f'PASS: {len(svgs)} SVGs, metadata, defaults, panels, Aurorae, color roles and usability guards')
     if runtime:
         print('PASS: installed KPackage parsers and offscreen KSplash host')
     print('NOT TESTED: KCM discovery, visual rendering and multi-monitor/scale matrix')
