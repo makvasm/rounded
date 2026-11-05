@@ -97,6 +97,17 @@ def check_usability(theme, decoration, scheme):
         group = re.match(r'<[^>]*style="opacity:([0-9.]+)', text)
         return fill * (float(group.group(1)) if group else 1)
     window = ini(ROOT / 'color-schemes' / (scheme + '.colors'))['Colors:Window']
+    icon_colors = set()
+    for path in (theme / 'icons').glob('*.svg'):
+        body = re.sub(r'<style.*?</style>', '', path.read_text(), flags=re.S)
+        icon_colors |= {c.lower() for c in re.findall(r'(?:fill|stroke|stop-color):(#[0-9a-fA-F]{6})', body)}
+    if theme.name == 'ROUNDED-COLOR':
+        assert not icon_colors, f'{theme}: icons must use ColorScheme classes, found {sorted(icon_colors)}'
+    else:
+        panel = rgb(window['BackgroundNormal'])
+        for color in icon_colors - {'#%02x%02x%02x' % panel}:
+            ratio = contrast(rgb(color), panel)
+            assert ratio >= 3, f'{theme}: icon colour {color} contrast {ratio:.2f} < 3'
     ink, panel = rgb(window['ForegroundNormal']), rgb(window['BackgroundNormal'])
     for prefix in ('', 'north-', 'east-', 'west-'):
         normal, hover = overlay(prefix + 'normal-center'), overlay(prefix + 'hover-top')
