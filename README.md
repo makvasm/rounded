@@ -14,8 +14,10 @@ replacement desktop layout or an application style engine.
 | Window decoration (global theme default) | Breeze | Aurorae `ROUNDED-DARK` |
 | Aurorae decorations shipped | `ROUNDED` (manual choice) | `ROUNDED-DARK` |
 
-Applications use Breeze, icons use Breeze/Breeze Dark, and cursors use
-`breeze_cursors`. COLOR follows the selected system palette. DARK deliberately
+Applications use Breeze, application icons use Breeze/Breeze Dark, and
+cursors use `breeze_cursors`. Each Plasma style ships its own 101
+monochrome panel and system-tray icons (`icons/`), described in
+[docs/DESIGN.md](docs/DESIGN.md). COLOR follows the selected system palette. DARK deliberately
 ships its own `colors` and does not follow external palette changes.
 Aurorae colours are fixed in SVG, so the COLOR global theme selects the Breeze
 decoration, which follows the palette; with a light palette you may pick the
