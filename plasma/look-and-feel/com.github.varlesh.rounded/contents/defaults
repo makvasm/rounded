@@ -11,8 +11,8 @@ Theme=breeze
 name=ROUNDED-COLOR
 
 [kwinrc][org.kde.kdecoration2]
-library=org.kde.kwin.aurorae
-theme=__aurorae__svg__ROUNDED
+library=org.kde.breeze
+theme=Breeze
 
 [kcminputrc][Mouse]
 cursorTheme=breeze_cursors

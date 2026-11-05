@@ -79,7 +79,14 @@ def check(runtime=False):
         defaults = ini(package / 'contents/defaults')
         assert defaults['kdeglobals][General']['ColorScheme'] == scheme
         assert defaults['plasmarc][Theme']['name'] == desktop
-        assert defaults['kwinrc][org.kde.kdecoration2']['theme'] == '__aurorae__svg__' + decoration
+        kdecoration = defaults['kwinrc][org.kde.kdecoration2']
+        if suffix:
+            assert kdecoration['library'] == 'org.kde.kwin.aurorae'
+            assert kdecoration['theme'] == '__aurorae__svg__' + decoration
+        else:
+            # COLOR follows the user's palette; fixed-colour Aurorae cannot.
+            assert kdecoration['library'] == 'org.kde.breeze'
+            assert kdecoration['theme'] == 'Breeze'
         assert defaults['kcminputrc][Mouse']['cursorTheme'] == 'breeze_cursors'
         assert defaults['ksplashrc][KSplash']['Theme'] == name
         assert defaults['kdeglobals][KDE']['widgetStyle'] == 'Breeze'
